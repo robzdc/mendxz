@@ -1,0 +1,14 @@
+// Cloudflare Workers (static assets) config — used by Workers Builds on every push to main.
+// Docs: https://developers.cloudflare.com/workers/static-assets/
+{
+  "name": "mendxz",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    // Astro's static build output.
+    "directory": "./dist",
+    // Serves /apps/astrosurf from apps/astrosurf.html (matches trailingSlash: 'never' + build.format: 'file').
+    "html_handling": "auto-trailing-slash",
+    // Unknown paths get dist/404.html with a 404 status.
+    "not_found_handling": "404-page"
+  }
+}
