@@ -1,0 +1,31 @@
+---
+import { SITE } from '../config/site';
+const path = Astro.url.pathname;
+const links = [
+  { href: '/#apps', label: 'Apps' },
+  { href: '/support', label: 'Support' },
+];
+---
+<header class="border-b-2 border-ink">
+  <div class="wrap flex h-16 items-center justify-between gap-4">
+    <a href="/" class="font-display text-xl font-extrabold tracking-tight" aria-label={`${SITE.domain} home`}>
+      {SITE.name}<span class="text-accent">.</span>
+    </a>
+    <nav aria-label="Main">
+      <ul class="flex items-center gap-1 sm:gap-2">
+        {links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class:list={[
+                'label px-3 py-2 transition-colors hover:bg-ink hover:text-paper',
+                path.startsWith(l.href) && 'bg-ink text-paper',
+              ]}
+              aria-current={path.startsWith(l.href) ? 'page' : undefined}
+            >{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

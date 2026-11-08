@@ -1,0 +1,16 @@
+---
+export interface Props { items: { q: string; a: string }[]; headingLevel?: 'h2' | 'h3' }
+const { items, headingLevel = 'h3' } = Astro.props;
+const H = headingLevel;
+---
+<div class="border-t-2 border-ink">
+  {items.map((it, i) => (
+    <details class="group border-b-2 border-ink" open={i === 0}>
+      <summary class="flex cursor-pointer list-none items-start justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
+        <H class="font-display text-xl font-bold leading-tight tracking-tight md:text-2xl">{it.q}</H>
+        <span class="mt-1 grid size-8 shrink-0 place-items-center border-2 border-ink font-mono text-lg transition-colors group-open:bg-accent" aria-hidden="true"><span class="transition-transform group-open:rotate-45">+</span></span>
+      </summary>
+      <p class="max-w-[68ch] pb-6 text-lg leading-relaxed text-ink/80">{it.a}</p>
+    </details>
+  ))}
+</div>

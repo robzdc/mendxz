@@ -1,0 +1,164 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import StoreBadges from '../../../components/StoreBadges.astro';
+import Marquee from '../../../components/Marquee.astro';
+import Faq from '../../../components/Faq.astro';
+import { SITE, absoluteUrl } from '../../../config/site';
+import { app as appSchema, breadcrumbs, graph, organization, webPage } from '../../../lib/schema';
+import { fmtDate, pad, platformLabel } from '../../../lib/format';
+
+export async function getStaticPaths() {
+  const apps = await getCollection('apps');
+  return apps.map((app) => ({ params: { slug: app.id }, props: { app } }));
+}
+
+interface Props { app: CollectionEntry<'apps'> }
+const { app } = Astro.props;
+const d = app.data;
+const { Content } = await render(app);
+const path = `/apps/${app.id}`;
+
+const icon = await getImage({ src: d.icon, width: 512, height: 512, format: 'png' });
+const shots = await Promise.all(d.screenshots.map((s) => getImage({ src: s.src, width: 600, format: 'webp' })));
+const cover = d.cover ? await getImage({ src: d.cover.src, width: 1280, format: 'webp' }) : undefined;
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Apps', path: '/#apps' },
+  { name: d.name, path },
+];
+const platforms = d.platforms.map(platformLabel).join(' & ');
+const title = `${d.name} — ${d.genre} ${d.type} for ${platforms} | ${SITE.domain}`;
+const facts = [
+  { k: 'Genre', v: d.genre },
+  { k: 'Platforms', v: platforms },
+  { k: 'Price', v: d.price },
+  { k: 'Status', v: d.status === 'live' ? 'Available now' : 'Coming soon' },
+  ...(d.releaseDate ? [{ k: 'Release', v: fmtDate(d.releaseDate) }] : []),
+  { k: 'Developer', v: SITE.name },
+];
+
+const jsonLd = graph(
+  organization(),
+  webPage({ type: 'ItemPage', path, name: title, description: d.description, about: `${absoluteUrl(path)}#app` }),
+  appSchema(app, {
+    icon: absoluteUrl(icon.src),
+    cover: cover && absoluteUrl(cover.src),
+    screenshots: shots.map((s) => absoluteUrl(s.src)),
+  }),
+  breadcrumbs(crumbs),
+);
+---
+<BaseLayout title={title} description={d.description} image={d.ogImage} jsonLd={jsonLd}>
+  <article>
+    <header class="wrap pt-8 pb-16 md:pb-24">
+      <Breadcrumbs items={crumbs} />
+      <div class="mt-12 flex items-center gap-4">
+        <Image src={d.icon} alt={`${d.name} app icon`} width={112} height={112} loading="eager" class="size-20 rounded-[22%] border-2 border-ink shadow-hard md:size-28" />
+        <span class:list={['label px-2 py-1', d.status === 'live' ? 'bg-ink text-paper' : 'bg-accent text-accent-ink']}>
+          {d.status === 'live' ? 'Out now' : 'Coming soon'}
+        </span>
+      </div>
+      <h1 class="mt-8 font-display text-giga font-extrabold uppercase tracking-tighter break-words md:text-mega">{d.name}<span class="text-accent">.</span></h1>
+      <div class="mt-8 grid gap-10 md:grid-cols-12 md:items-start">
+        <div class="md:col-span-7">
+          <p class="font-display text-2xl font-medium leading-tight tracking-tight md:text-3xl">{d.tagline}</p>
+          <p class="mt-6 text-lg leading-relaxed text-ink/80 md:text-xl">{d.description}</p>
+        </div>
+        <div class="md:col-span-4 md:col-start-9 md:justify-self-end">
+          <StoreBadges app={d} />
+        </div>
+      </div>
+    </header>
+
+    <Marquee items={[d.genre, ...d.platforms.map(platformLabel), d.price, d.status === 'live' ? 'Out now' : 'Coming soon']} />
+
+    {d.cover && (
+      <figure class="wrap pt-14 md:pt-20">
+        <div class="relative border-2 border-ink shadow-hard-lg">
+          <Image src={d.cover.src} alt={d.cover.alt} widths={[640, 1280, 1920]} sizes="(min-width: 80rem) 76rem, 100vw" class="block h-auto w-full" />
+          <span class="label absolute top-3 left-3 bg-paper px-2 py-1 md:top-5 md:left-5" aria-hidden="true">Key art</span>
+        </div>
+      </figure>
+    )}
+
+    {d.screenshots.length > 0 && (
+      <section class="wrap py-14 md:py-20" aria-labelledby="shots-title">
+        <div class="flex items-end justify-between gap-6 border-b-2 border-ink pb-6">
+          <h2 id="shots-title" class="font-display text-4xl font-extrabold sm:text-5xl uppercase tracking-tighter md:text-7xl">Screenshots</h2>
+          <span class="label pb-2">
+            <span class="md:hidden">Swipe →</span>
+            <span class="hidden md:inline">{pad(d.screenshots.length)} image{d.screenshots.length === 1 ? '' : 's'}</span>
+          </span>
+        </div>
+        <ul class="-mx-4 mt-8 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] md:mx-0 md:mt-10 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-8 [&::-webkit-scrollbar]:hidden">
+          {d.screenshots.map((s, i) => (
+            <li class="w-[68%] shrink-0 snap-start sm:w-[40%] md:w-auto md:even:translate-y-8">
+              <figure>
+                <div class="aspect-[9/19.5] overflow-hidden border-2 border-ink bg-ink shadow-hard">
+                  <Image src={s.src} alt={s.alt} widths={[300, 600]} sizes="(min-width: 48rem) 22vw, 68vw" class="size-full object-contain" />
+                </div>
+                <figcaption class="label mt-3 text-muted" aria-hidden="true">{pad(i + 1)}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <div class="wrap grid gap-16 py-10 lg:grid-cols-12">
+      <div class="lg:col-span-7">
+        <div class="prose-ed"><Content /></div>
+      </div>
+      <aside class="lg:col-span-4 lg:col-start-9" aria-labelledby="facts-title">
+        <div class="sticky top-6 border-2 border-ink bg-paper-2">
+          <h2 id="facts-title" class="label border-b-2 border-ink px-5 py-3">Quick facts</h2>
+          <dl class="divide-y divide-line">
+            {facts.map((f) => (
+              <div class="flex justify-between gap-4 px-5 py-3">
+                <dt class="text-muted">{f.k}</dt>
+                <dd class="text-right font-semibold">{f.v}</dd>
+              </div>
+            ))}
+          </dl>
+          <div class="flex flex-col gap-2 border-t-2 border-ink p-5">
+            <a href={`${path}/support`} class="btn justify-between">Get support <span aria-hidden="true">→</span></a>
+            <a href={`${path}/privacy`} class="btn btn-ghost justify-between">Privacy policy <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    {d.features.length > 0 && (
+      <section class="wrap py-16" aria-labelledby="features-title">
+        <h2 id="features-title" class="border-b-2 border-ink pb-6 font-display text-5xl font-extrabold uppercase tracking-tighter md:text-7xl">Features</h2>
+        <ul class="grid border-l-2 border-ink sm:grid-cols-2">
+          {d.features.map((f, i) => (
+            <li class="group border-r-2 border-b-2 border-ink p-6 transition-colors hover:bg-accent md:p-10">
+              <span class="font-mono text-sm text-muted group-hover:text-ink">{pad(i + 1)}</span>
+              <h3 class="mt-4 font-display text-2xl font-bold tracking-tight md:text-3xl">{f.title}</h3>
+              <p class="mt-3 text-lg leading-relaxed text-ink/75 group-hover:text-ink">{f.body}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {d.faq.length > 0 && (
+      <section class="wrap py-16" aria-labelledby="faq-title">
+        <div class="grid gap-10 md:grid-cols-12">
+          <div class="md:col-span-4">
+            <h2 id="faq-title" class="font-display text-5xl font-extrabold uppercase leading-none tracking-tighter">Questions<span class="text-accent">?</span></h2>
+            <p class="mt-4 text-lg text-ink/75">More answers on the <a class="underline decoration-accent decoration-2 underline-offset-4" href={`${path}/support`}>{d.name} support page</a>.</p>
+          </div>
+          <div class="md:col-span-8">
+            <Faq items={d.faq.slice(0, 4)} />
+          </div>
+        </div>
+      </section>
+    )}
+  </article>
+</BaseLayout>

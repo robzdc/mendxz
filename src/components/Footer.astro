@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE } from '../config/site';
+const apps = (await getCollection('apps')).sort((a, b) => a.data.order - b.data.order);
+const year = new Date().getFullYear();
+---
+<footer class="mt-24 bg-ink text-paper">
+  <div class="wrap grid gap-12 py-16 md:grid-cols-12">
+    <div class="md:col-span-6">
+      <p class="font-display text-giga font-extrabold uppercase tracking-tighter">
+        Say hi<span class="text-accent">.</span>
+      </p>
+      <a href={`mailto:${SITE.email}`} class="mt-6 inline-block text-lg underline decoration-accent decoration-2 underline-offset-4 hover:text-accent">
+        {SITE.email}
+      </a>
+    </div>
+    <nav class="md:col-span-3" aria-label="Apps">
+      <p class="label text-paper/60">Apps</p>
+      <ul class="mt-4 space-y-2">
+        {apps.map((a) => (
+          <li><a class="hover:text-accent" href={`/apps/${a.id}`}>{a.data.name}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <nav class="md:col-span-3" aria-label="Help">
+      <p class="label text-paper/60">Help</p>
+      <ul class="mt-4 space-y-2">
+        <li><a class="hover:text-accent" href="/support">Support</a></li>
+        {apps.map((a) => (
+          <li><a class="hover:text-accent" href={`/apps/${a.id}/privacy`}>{a.data.name} privacy</a></li>
+        ))}
+        {SITE.socials.map((s) => (
+          <li><a class="hover:text-accent" href={s.url} rel="me noopener" target="_blank">{s.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+  <div class="border-t border-paper/15">
+    <div class="wrap flex flex-wrap justify-between gap-2 py-6 label text-paper/60">
+      <span>© {year} {SITE.name}</span>
+      <span>Independent studio · iOS & Android</span>
+    </div>
+  </div>
+</footer>

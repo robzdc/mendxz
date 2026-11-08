@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { pad, platformLabel } from '../lib/format';
+export interface Props { app: CollectionEntry<'apps'>; index: number }
+const { app, index } = Astro.props;
+const d = app.data;
+---
+<article class="group relative border-2 border-ink bg-paper transition-all duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-hard-lg">
+  <div class="grid gap-6 p-5 md:grid-cols-12 md:items-center md:p-8">
+    <span class="font-mono text-5xl font-medium text-ink/25 transition-colors group-hover:text-accent md:col-span-2 md:text-7xl" aria-hidden="true">[{pad(index + 1)}]</span>
+    <Image src={d.icon} alt="" width={96} height={96} class="size-20 rounded-[22%] border-2 border-ink md:col-span-2 md:size-24" />
+    <div class="md:col-span-6">
+      <h3 class="font-display text-3xl font-extrabold uppercase tracking-tight md:text-5xl">
+        <a href={`/apps/${app.id}`} class="after:absolute after:inset-0">{d.name}</a>
+      </h3>
+      <p class="mt-2 text-lg text-ink/75">{d.tagline}</p>
+      <ul class="mt-4 flex flex-wrap gap-2" aria-label="Details">
+        <li class="label border border-ink px-2 py-1">{d.genre}</li>
+        {d.platforms.map((p) => <li class="label border border-ink px-2 py-1">{platformLabel(p)}</li>)}
+        <li class:list={['label px-2 py-1', d.status === 'live' ? 'bg-ink text-paper' : 'bg-accent text-accent-ink']}>
+          {d.status === 'live' ? 'Out now' : 'Coming soon'}
+        </li>
+      </ul>
+    </div>
+    <span class="hidden justify-self-end font-display text-6xl transition-transform group-hover:translate-x-2 md:col-span-2 md:block" aria-hidden="true">→</span>
+  </div>
+</article>

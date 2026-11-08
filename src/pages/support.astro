@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import { SITE } from '../config/site';
+import { breadcrumbs, faq, graph, organization, webPage } from '../lib/schema';
+
+const apps = (await getCollection('apps')).sort((a, b) => a.data.order - b.data.order);
+const title = `Support — Help & Contact | ${SITE.domain}`;
+const description = `Get help with any ${SITE.name} app. Find your app's support page and FAQ, or email ${SITE.email}.`;
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Support', path: '/support' }];
+const general = [
+  { q: `How do I contact ${SITE.name}?`, a: `Email ${SITE.email}. We usually reply within ${SITE.responseTime}.` },
+  { q: 'Where can I find help for a specific app?', a: `Every ${SITE.name} app has its own support page with an FAQ and troubleshooting tips. Pick your app from the list on this page.` },
+  { q: 'How do I request a refund?', a: 'Purchases are handled by Apple and Google. Request a refund at reportaproblem.apple.com for iOS, or through Google Play order history for Android.' },
+];
+const jsonLd = graph(
+  organization(),
+  webPage({ type: 'ContactPage', path: '/support', name: title, description }),
+  faq(general),
+  breadcrumbs(crumbs),
+);
+---
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <section class="wrap pt-8 pb-16">
+    <Breadcrumbs items={crumbs} />
+    <h1 class="mt-12 font-display text-mega font-extrabold uppercase tracking-tighter">Support<span class="text-accent">.</span></h1>
+    <p class="mt-8 max-w-3xl text-xl leading-relaxed md:text-2xl">
+      Need help with a {SITE.name} app? Choose your app below for its FAQ and troubleshooting tips, or email <a href={`mailto:${SITE.email}`} class="font-semibold underline decoration-accent decoration-2 underline-offset-4">{SITE.email}</a>.
+    </p>
+  </section>
+
+  <section class="wrap" aria-labelledby="pick-title">
+    <h2 id="pick-title" class="label border-b-2 border-ink pb-4">Choose your app</h2>
+    <ul class="grid gap-6 pt-8 sm:grid-cols-2 lg:grid-cols-3">
+      {apps.map((a) => (
+        <li>
+          <a href={`/apps/${a.id}/support`} class="group flex items-center gap-5 border-2 border-ink p-5 transition-all hover:-translate-x-1 hover:-translate-y-1 hover:bg-accent hover:shadow-hard">
+            <Image src={a.data.icon} alt="" width={64} height={64} class="size-16 rounded-[22%] border-2 border-ink" />
+            <span class="flex-1">
+              <span class="block font-display text-2xl font-extrabold uppercase tracking-tight">{a.data.name}</span>
+              <span class="label text-muted group-hover:text-ink">Support & FAQ</span>
+            </span>
+            <span class="font-display text-3xl transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap py-20" aria-labelledby="general-title">
+    <div class="grid gap-10 md:grid-cols-12">
+      <h2 id="general-title" class="font-display text-4xl font-extrabold uppercase leading-none tracking-tight md:col-span-4 md:text-5xl">General questions</h2>
+      <div class="md:col-span-8"><Faq items={general} /></div>
+    </div>
+  </section>
+</BaseLayout>

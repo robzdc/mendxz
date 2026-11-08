@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+---
+<BaseLayout title={`Page not found | ${SITE.domain}`} description="This page doesn't exist." noindex>
+  <section class="wrap py-24">
+    <p class="label">Error 404</p>
+    <h1 class="mt-6 font-display text-mega font-extrabold uppercase tracking-tighter">Lost<span class="text-accent">?</span></h1>
+    <p class="mt-8 max-w-xl text-xl">This page doesn't exist, or it has moved.</p>
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a href="/" class="btn">Go home <span aria-hidden="true">→</span></a>
+      <a href="/support" class="btn btn-ghost">Support</a>
+    </div>
+  </section>
+</BaseLayout>

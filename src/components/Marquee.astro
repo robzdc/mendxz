@@ -1,0 +1,18 @@
+---
+export interface Props { items: string[]; class?: string }
+const { items, class: cls } = Astro.props;
+const row = [...items, ...items, ...items, ...items];
+---
+<div class:list={['overflow-hidden border-y-2 border-ink bg-accent text-accent-ink select-none', cls]} aria-hidden="true">
+  <div class="flex w-max animate-marquee whitespace-nowrap py-3">
+    {[0, 1].map(() => (
+      <div class="flex shrink-0">
+        {row.map((t) => (
+          <span class="font-display text-2xl font-extrabold uppercase tracking-tight md:text-4xl px-5">
+            {t} <span class="inline-block px-3">✸</span>
+          </span>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
