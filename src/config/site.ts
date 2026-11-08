@@ -6,11 +6,17 @@ export const SITE = {
   name: 'mendxz',
   domain: 'mendxz.com',
   url: 'https://mendxz.com',
-  title: 'mendxz.com — small games & apps',
+  title: 'mendxz — small games & apps',
   description:
-    'mendxz.com is an independent studio making small, polished mobile games and apps for iOS and Android.',
-  tagline: 'Small games & apps, made with care.',
-  author: 'mendxz',
+    'mendxz is a hobby studio by Roberto del Castillo in Mexico City, making small, experimental games and apps for iOS and Android.',
+  tagline: 'Small, experimental games & apps.',
+  author: 'Roberto del Castillo',
+  /** The person behind the studio — feeds the About copy and Organization `founder` JSON-LD. */
+  founder: {
+    name: 'Roberto del Castillo',
+    worksFor: { name: 'espina.studio', url: 'https://espina.studio' },
+    location: 'Mexico City, Mexico',
+  },
   email: 'support@mendxz.com',
   locale: 'en_US',
   lang: 'en',

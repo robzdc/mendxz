@@ -17,6 +17,13 @@ export function organization(): Json {
     logo: absoluteUrl('/favicon.svg'),
     email: SITE.email,
     description: SITE.description,
+    foundingDate: '2026',
+    founder: {
+      '@type': 'Person',
+      name: SITE.founder.name,
+      homeLocation: { '@type': 'Place', name: SITE.founder.location },
+      worksFor: { '@type': 'Organization', name: SITE.founder.worksFor.name, url: SITE.founder.worksFor.url },
+    },
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer support',

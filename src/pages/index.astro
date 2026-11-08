@@ -27,14 +27,14 @@ const jsonLd = graph(
   <section class="wrap pt-14 pb-16 md:pt-24 md:pb-24">
     <p class="label flex items-center gap-3">
       <span class="inline-block size-2.5 bg-accent" aria-hidden="true"></span>
-      Independent studio · Est. 2026
+      Hobby project · Mexico City · Est. 2026
     </p>
     <h1 class="mt-8 font-display text-mega font-extrabold uppercase tracking-tighter">
       Small<br />games<span class="text-accent">&</span><br class="sm:hidden" /> apps<span class="text-accent">.</span>
     </h1>
     <div class="mt-12 grid gap-8 md:grid-cols-12">
       <p class="text-xl leading-relaxed md:col-span-6 md:col-start-7 md:text-2xl">
-        <strong class="font-semibold">{SITE.domain}</strong> is an independent studio by {SITE.author} making small, polished mobile games and apps for iOS and Android. Simple to pick up, made with care.
+        <strong class="font-semibold">{SITE.name}</strong> is a hobby studio by {SITE.founder.name}, making small, experimental games and apps for iOS and Android. Simple to pick up, made with care.
       </p>
     </div>
   </section>
@@ -55,7 +55,8 @@ const jsonLd = graph(
     <div class="grid gap-10 border-2 border-ink bg-paper-2 p-6 md:grid-cols-12 md:p-12">
       <h2 id="about-title" class="font-display text-4xl font-extrabold uppercase leading-none tracking-tight md:col-span-4 md:text-5xl">What is mendxz<span class="text-accent">?</span></h2>
       <div class="space-y-5 text-lg leading-relaxed md:col-span-7 md:col-start-6">
-        <p>{SITE.name} is a one-person studio that designs, builds and supports every app in-house. Each project is small on purpose: fast to load, respectful of your time, and free of dark patterns.</p>
+        <p>{SITE.name} is my side project for making games, and the odd app. I'm {SITE.founder.name}, a developer with 10+ years of experience, currently working at <a class="underline decoration-accent decoration-2 underline-offset-4" href={SITE.founder.worksFor.url} rel="noopener" target="_blank">{SITE.founder.worksFor.name}</a>. I'm from Hermosillo, Sonora, and now live in Mexico City.</p>
+        <p>Games are new to me. I make them for fun, with AI as part of my toolkit, and every one is an experiment. Whatever I ship stays small on purpose: quick to pick up, respectful of your time, and free of dark patterns.</p>
         <p>Need help with an app? Every app has its own <a class="underline decoration-accent decoration-2 underline-offset-4" href="/support">support page</a>, or email <a class="underline decoration-accent decoration-2 underline-offset-4" href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
       </div>
     </div>
