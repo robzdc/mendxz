@@ -28,6 +28,8 @@ export const SITE = {
     // { label: 'Instagram', url: 'https://instagram.com/mendxz' },
   ] as { label: string; url: string }[],
   ogImage: '/og/default.png',
+  /** Google Tag Manager container ID. Leave empty to disable. */
+  gtmId: 'GTM-WJQ42F7Z',
 } as const;
 
 export const absoluteUrl = (path = '/') => new URL(path, SITE.url).toString().replace(/\/$/, '') || SITE.url;
