@@ -26,9 +26,9 @@ screenshots:
   - src: ../../assets/apps/astrosurf/shop-rockets.webp
     alt: The Astrosurf shop open on the Rockets tab, listing rockets such as Aero 8, Scrap Jet and Phantom X to buy with points or equip.
   - src: ../../assets/apps/astrosurf/gameplay-2.webp
-    alt: Astrosurf splash screen. A rocket arcs away from an orange ringed planet in deep space.
+    alt: Astrosurf mid-run. A rocket flies from an orange ringed planet toward the next one, with a score of 7 and the best score shown at the top (Spanish interface).
   - src: ../../assets/apps/astrosurf/shop-music.webp
-    alt: Astrosurf splash screen. A rocket arcs away from an orange ringed planet in deep space.
+    alt: The Astrosurf shop open on the Music tab, listing tracks such as Drift and Retro Invaders priced in points, with Drift equipped (Spanish interface).
 features:
   - title: One tap to launch
     body: You circle a planet. Tap to launch in a straight line, fly into the next planet's ring and get caught. Miss, and you drift into space.
@@ -110,4 +110,4 @@ It takes one second to learn and much longer to master. Every planet climbs high
 
 ## Who made it
 
-Astrosurf is designed and built by [mendxz](/), an independent studio making small, polished mobile games.
+Astrosurf is designed and built by Roberto del Castillo, a developer with 10+ years of experience, under [mendxz](/), a hobby studio in Mexico City. It's the first game Roberto has made, built for fun with AI as part of the toolkit.

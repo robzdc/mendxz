@@ -16,6 +16,8 @@ export const SITE = {
     name: 'Roberto del Castillo',
     worksFor: { name: 'espina.studio', url: 'https://espina.studio' },
     location: 'Mexico City, Mexico',
+    /** Public profiles — used for the founder's `sameAs` in JSON-LD. */
+    profiles: ['https://github.com/robzdc', 'https://www.linkedin.com/in/robzdc/'],
   },
   email: 'support@mendxz.com',
   locale: 'en_US',

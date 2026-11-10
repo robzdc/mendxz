@@ -21,6 +21,7 @@ export function organization(): Json {
     founder: {
       '@type': 'Person',
       name: SITE.founder.name,
+      ...(SITE.founder.profiles.length ? { sameAs: [...SITE.founder.profiles] } : {}),
       homeLocation: { '@type': 'Place', name: SITE.founder.location },
       worksFor: { '@type': 'Organization', name: SITE.founder.worksFor.name, url: SITE.founder.worksFor.url },
     },

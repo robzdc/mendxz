@@ -38,7 +38,7 @@ const facts = [
   { k: 'Price', v: d.price },
   { k: 'Status', v: d.status === 'live' ? 'Available now' : 'Coming soon' },
   ...(d.releaseDate ? [{ k: 'Release', v: fmtDate(d.releaseDate) }] : []),
-  { k: 'Developer', v: SITE.name },
+  { k: 'Developer', v: `${SITE.founder.name} (${SITE.name})` },
 ];
 
 const jsonLd = graph(

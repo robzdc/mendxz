@@ -19,7 +19,7 @@ const d = app.data;
 const appPath = `/apps/${app.id}`;
 const path = `${appPath}/support`;
 const title = `${d.name} Support — Help, FAQ & Contact | ${SITE.domain}`;
-const description = `Get help with ${d.name}: answers to common questions, troubleshooting tips, and how to contact the ${SITE.name} team at ${SITE.email}.`;
+const description = `Get help with ${d.name}: answers to common questions, troubleshooting tips, and how to contact ${SITE.name} at ${SITE.email}.`;
 const subject = encodeURIComponent(`${d.name} support`);
 const body = encodeURIComponent(`Hi ${SITE.name},\n\nDevice model:\nOS version:\nGame version:\n\nWhat happened:\n`);
 const mailto = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
@@ -54,7 +54,7 @@ const jsonLd = graph(
     </div>
     <h1 class="mt-6 font-display text-giga font-extrabold uppercase tracking-tighter">Need a hand<span class="text-accent">?</span></h1>
     <p class="mt-8 max-w-3xl text-xl leading-relaxed md:text-2xl">
-      For help with <a href={appPath} class="font-semibold underline decoration-accent decoration-2 underline-offset-4">{d.name}</a>, email <a href={mailto} class="font-semibold underline decoration-accent decoration-2 underline-offset-4">{SITE.email}</a>. We usually reply within {SITE.responseTime}. Answers to the most common questions are below.
+      For help with <a href={appPath} class="font-semibold underline decoration-accent decoration-2 underline-offset-4">{d.name}</a>, email <a href={mailto} class="font-semibold underline decoration-accent decoration-2 underline-offset-4">{SITE.email}</a>. Replies usually arrive within {SITE.responseTime}. Answers to the most common questions are below.
     </p>
   </section>
 
