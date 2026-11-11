@@ -6,10 +6,10 @@ export const SITE = {
   name: 'mendxz',
   domain: 'mendxz.com',
   url: 'https://mendxz.com',
-  title: 'mendxz — small games & apps',
+  title: 'mendxz — experiments you can play',
   description:
     'mendxz is a hobby studio by Roberto del Castillo in Mexico City, making small, experimental games and apps for iOS and Android.',
-  tagline: 'Small, experimental games & apps.',
+  tagline: 'Experiments you can play.',
   author: 'Roberto del Castillo',
   /** The person behind the studio — feeds the About copy and Organization `founder` JSON-LD. */
   founder: {
