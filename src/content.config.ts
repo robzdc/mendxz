@@ -40,6 +40,8 @@ const apps = defineCollection({
         lastUpdated: z.coerce.date(),
         dataCollected: z.array(z.object({ type: z.string(), purpose: z.string() })).default([]),
         thirdParties: z.array(z.object({ name: z.string(), url: z.url(), purpose: z.string().optional() })).default([]),
+        /** Set when the app shows ads from Google AdMob — adds the Advertising section. */
+        admob: z.boolean().default(false),
         /** Overrides the default "Data retention and deletion" paragraph. */
         retention: z.string().optional(),
       }),

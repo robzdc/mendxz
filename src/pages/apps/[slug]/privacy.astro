@@ -41,7 +41,7 @@ const jsonLd = graph(
 
     <div class="prose-ed mt-10">
       <!-- PLACEHOLDER POLICY: review with a legal professional before submitting to the App Store / Google Play. -->
-      <p><strong>In short:</strong> {d.name} does not sell your personal data, does not require an account with us, and collects only the minimum needed to make the {d.type} work and fix bugs.</p>
+      <p><strong>In short:</strong> {d.name} does not sell your personal data, does not require an account with us, and collects only the minimum needed to make the {d.type} work and fix bugs.{p.admob && <> It shows ads from Google AdMob, which collects some device data to show and measure those ads (see <a href="#advertising">Advertising</a>).</>}</p>
 
       <h2>Who we are</h2>
       <p>{d.name} is developed and published by {SITE.name} ("we", "us"). You can contact us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
@@ -60,10 +60,18 @@ const jsonLd = graph(
         <>
           <p>{d.name} uses the following third-party services, which may collect data under their own privacy policies:</p>
           <ul>{p.thirdParties.map((t) => <li><a href={t.url} rel="noopener" target="_blank">{t.name}</a>{t.purpose && <>: {t.purpose}</>}</li>)}</ul>
-          <p>{d.name} does not use advertising or analytics services.</p>
+          {!p.admob && <p>{d.name} does not use advertising or analytics services.</p>}
         </>
       ) : (
         <p>{d.name} does not use third-party advertising or analytics services.</p>
+      )}
+
+      {p.admob && (
+        <>
+          <h2 id="advertising">Advertising</h2>
+          <p>{d.name} is free and shows ads served by <a href="https://admob.google.com" rel="noopener" target="_blank">Google AdMob</a>. To choose which ads to show and measure how they perform, AdMob may collect your device's advertising identifier (IDFA on iOS, Advertising ID on Android), your IP address, general device information such as model and OS version, and how you interact with ads. Google processes this data under its own <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">privacy policy</a>. You can read more in <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">how Google uses information from apps that use its services</a>.</p>
+          <p>You can limit personalized ads at any time. On iPhone and iPad, go to Settings › Privacy &amp; Security › Tracking and turn off Allow Apps to Request to Track. On Android, go to Settings › Google › Ads (or Settings › Privacy › Ads) to reset or delete your advertising ID. You will still see ads, but they will be less tailored to you.</p>
+        </>
       )}
 
       <h2>Children's privacy</h2>

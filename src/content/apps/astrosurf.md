@@ -44,7 +44,7 @@ features:
     body: Playable in 10 languages, with switches for sound, vibration and reduced motion.
 faq:
   - q: Is Astrosurf free?
-    a: Yes. Astrosurf is free to download on iPhone, iPad and Android. There are no ads, and everything in the shop is bought with points you earn by playing.
+    a: Yes. Astrosurf is free to download on iPhone, iPad and Android, and is supported by ads from Google AdMob. Everything in the shop is bought with points you earn by playing.
   - q: How do you play Astrosurf?
     a: Your rocket circles a planet. Tap to launch in a straight line, then fly into the next planet's ring to get caught. Each planet you reach adds to your score. Miss the ring and the run ends.
   - q: Which devices does Astrosurf support?
@@ -71,7 +71,8 @@ support:
     - For leaderboards and cloud save, check that you are signed in to Game Center (iOS) or Google Play Games (Android) and connected to the internet.
     - No sound? Open Settings in the game and check that Sound is on, and that your phone isn't on silent.
 privacy:
-  lastUpdated: 2026-11-05
+  lastUpdated: 2026-11-11
+  admob: true
   dataCollected:
     - type: Game progress and settings
       purpose: Your best scores, points, items, missions and settings are saved on your device so the game remembers them.
@@ -81,7 +82,12 @@ privacy:
       purpose: When you are signed in, your best score for each difficulty and your player name are sent to Game Center or Google Play Games to show on leaderboards.
     - type: Photos (only when you ask)
       purpose: Astrosurf saves your score card image to Photos only when you tap Save Image. It never reads your photo library.
+    - type: Advertising data
+      purpose: Google AdMob receives your device's advertising identifier, IP address, device information and ad interactions to show and measure ads. See Advertising below.
   thirdParties:
+    - name: Google AdMob
+      url: https://policies.google.com/privacy
+      purpose: shows ads in the game.
     - name: Apple Game Center and iCloud
       url: https://www.apple.com/legal/privacy/
       purpose: leaderboards and cloud save on iPhone and iPad.
