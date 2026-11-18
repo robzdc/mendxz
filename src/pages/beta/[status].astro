@@ -1,0 +1,31 @@
+---
+/** No-JS landing pages for the Android beta form (the Worker 303s here). */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../config/site';
+
+export function getStaticPaths() {
+  return [{ params: { status: 'joined' } }, { params: { status: 'error' } }];
+}
+
+const ok = Astro.params.status === 'joined';
+---
+<BaseLayout
+  title={`${ok ? "You're on the list" : 'Sign-up failed'} | ${SITE.domain}`}
+  description="Android beta sign-up."
+  noindex
+>
+  <section class="wrap py-24">
+    <p class="label">Android beta</p>
+    <h1 class="mt-6 font-display text-giga font-extrabold uppercase tracking-tighter">
+      {ok ? <>You're in<span class="text-accent">.</span></> : <>Hmm<span class="text-accent">?</span></>}
+    </h1>
+    <p class="mt-8 max-w-xl text-xl">
+      {ok
+        ? "Thanks for signing up. We'll email you the Google Play invite link soon."
+        : <>Something went wrong and your sign-up didn't go through. Go back and try again, or email <a class="underline decoration-accent decoration-2 underline-offset-4" href={`mailto:${SITE.email}`}>{SITE.email}</a>.</>}
+    </p>
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a href="/" class="btn">Go home <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</BaseLayout>

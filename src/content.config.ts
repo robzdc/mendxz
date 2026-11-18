@@ -18,6 +18,8 @@ const apps = defineCollection({
       appStoreUrl: z.url().optional(),
       playStoreUrl: z.url().optional(),
       releaseDate: z.coerce.date().optional(),
+      /** Show the Android closed-testing sign-up form while the app is coming soon. */
+      androidBeta: z.boolean().default(false),
       icon: image(),
       /** Wide key art shown as a banner on the project page (any aspect ratio). */
       cover: z.object({ src: image(), alt: z.string() }).optional(),

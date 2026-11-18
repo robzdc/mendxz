@@ -3,10 +3,12 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Marquee from '../components/Marquee.astro';
 import AppCard from '../components/AppCard.astro';
+import BetaSignup from '../components/BetaSignup.astro';
 import { SITE } from '../config/site';
 import { graph, organization, website, webPage } from '../lib/schema';
 
 const apps = (await getCollection('apps')).sort((a, b) => a.data.order - b.data.order);
+const betaApps = apps.filter((a) => a.data.androidBeta && a.data.status === 'coming-soon');
 const jsonLd = graph(
   organization(),
   website(),
@@ -50,6 +52,12 @@ const jsonLd = graph(
       {apps.map((app, i) => <li><AppCard app={app} index={i} /></li>)}
     </ul>
   </section>
+
+  {betaApps.map((app, i) => (
+    <section class="wrap pb-20 md:pb-28" aria-label={`${app.data.name} Android beta sign-up`}>
+      <BetaSignup app={app} variant="compact" id={i === 0 ? 'beta' : undefined} />
+    </section>
+  ))}
 
   <section class="wrap" aria-labelledby="about-title">
     <div class="grid gap-10 border-2 border-ink bg-paper-2 p-6 md:grid-cols-12 md:p-12">

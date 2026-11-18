@@ -8,7 +8,7 @@ export default defineConfig({
   site: 'https://mendxz.com',
   trailingSlash: 'never',
   build: { format: 'file' },
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !page.includes('/beta/') })],
   vite: {
     plugins: [tailwindcss()],
   },

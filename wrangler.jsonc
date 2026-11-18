@@ -3,7 +3,15 @@
 {
   "name": "mendxz",
   "compatibility_date": "2026-11-01",
+  // Worker only runs for /api/* (see run_worker_first); all other requests go straight to static assets.
+  "main": "./worker/index.ts",
+  "vars": {
+    // Where Android beta sign-ups are emailed. SENDGRID_API_KEY is a secret: `npx wrangler secret put SENDGRID_API_KEY`.
+    "NOTIFY_EMAIL": "support@mendxz.com"
+  },
   "assets": {
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
     // Astro's static build output.
     "directory": "./dist",
     // Serves /apps/astrosurf from apps/astrosurf.html (matches trailingSlash: 'never' + build.format: 'file').

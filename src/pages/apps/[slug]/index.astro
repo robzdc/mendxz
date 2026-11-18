@@ -6,6 +6,7 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import StoreBadges from '../../../components/StoreBadges.astro';
 import Marquee from '../../../components/Marquee.astro';
 import Faq from '../../../components/Faq.astro';
+import BetaSignup from '../../../components/BetaSignup.astro';
 import { SITE, absoluteUrl } from '../../../config/site';
 import { app as appSchema, breadcrumbs, graph, organization, webPage } from '../../../lib/schema';
 import { fmtDate, pad, platformLabel } from '../../../lib/format';
@@ -20,6 +21,7 @@ const { app } = Astro.props;
 const d = app.data;
 const { Content } = await render(app);
 const path = `/apps/${app.id}`;
+const showBeta = d.androidBeta && d.status === 'coming-soon';
 
 const icon = await getImage({ src: d.icon, width: 512, height: 512, format: 'png' });
 const shots = await Promise.all(d.screenshots.map((s) => getImage({ src: s.src, width: 600, format: 'webp' })));
@@ -70,6 +72,7 @@ const jsonLd = graph(
         </div>
         <div class="md:col-span-4 md:col-start-9 md:justify-self-end">
           <StoreBadges app={d} />
+          {showBeta && <a href="#beta" class="btn btn-ghost mt-3 min-w-48 justify-between">Join the Android beta <span aria-hidden="true">↓</span></a>}
         </div>
       </div>
     </header>
@@ -83,6 +86,12 @@ const jsonLd = graph(
           <span class="label absolute top-3 left-3 bg-paper px-2 py-1 md:top-5 md:left-5" aria-hidden="true">Key art</span>
         </div>
       </figure>
+    )}
+
+    {showBeta && (
+      <section class="wrap pt-14 md:pt-20" aria-label={`${d.name} Android beta sign-up`}>
+        <BetaSignup app={app} id="beta" />
+      </section>
     )}
 
     {d.screenshots.length > 0 && (

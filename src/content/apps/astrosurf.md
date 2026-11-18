@@ -15,6 +15,8 @@ price: Free
 appStoreUrl: https://apps.apple.com/app/id6831235043
 playStoreUrl: https://play.google.com/store/apps/details?id=com.mendxz.studio.astrosurf
 # releaseDate: 2026-12-01
+# Shows the "Test on Android" sign-up form (homepage + app page) while status is coming-soon.
+androidBeta: true
 icon: ../../assets/apps/astrosurf/icon.png
 ogImage: /og/astrosurf.png
 cover:
@@ -71,7 +73,7 @@ support:
     - For leaderboards and cloud save, check that you are signed in to Game Center (iOS) or Google Play Games (Android) and connected to the internet.
     - No sound? Open Settings in the game and check that Sound is on, and that your phone isn't on silent.
 privacy:
-  lastUpdated: 2026-11-11
+  lastUpdated: 2026-11-18
   admob: true
   dataCollected:
     - type: Game progress and settings
@@ -84,6 +86,8 @@ privacy:
       purpose: Astrosurf saves your score card image to Photos only when you tap Save Image. It never reads your photo library.
     - type: Advertising data
       purpose: Google AdMob receives your device's advertising identifier, IP address, device information and ad interactions to show and measure ads. See Advertising below.
+    - type: Beta sign-up email (website only)
+      purpose: If you sign up on mendxz.com to test Astrosurf on Android, your email is sent to us through SendGrid so we can invite you to the Google Play beta. We delete it on request or after launch.
   thirdParties:
     - name: Google AdMob
       url: https://policies.google.com/privacy
@@ -97,6 +101,9 @@ privacy:
     - name: GitHub Pages
       url: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
       purpose: hosts the shop catalog the game downloads. Like any web server, it receives your IP address with the request.
+    - name: SendGrid (Twilio)
+      url: https://www.twilio.com/en-us/legal/privacy
+      purpose: delivers Android beta sign-ups from mendxz.com to us by email.
   retention: Game progress is stored on your device and is removed when you delete the app. A cloud copy stays in your Apple or Google account until you delete it there.
 order: 1
 ---

@@ -1,0 +1,124 @@
+---
+/**
+ * Android closed-testing sign-up. Posts to the Worker at /api/testers (worker/index.ts),
+ * which emails the address to the studio via SendGrid. Without JS the Worker redirects to /beta/joined or /beta/error.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { SITE } from '../config/site';
+
+export interface Props {
+  app: CollectionEntry<'apps'>;
+  variant?: 'full' | 'compact';
+  /** Anchor id, e.g. "beta" so other links can jump to the form. */
+  id?: string;
+}
+const { app, variant = 'full', id } = Astro.props;
+const name = app.data.name;
+const inputId = `beta-email-${app.id}-${variant}`;
+---
+<div
+  id={id}
+  data-beta
+  data-app={app.id}
+  class:list={['scroll-mt-8 border-2 border-ink bg-paper-2 shadow-hard-lg', variant === 'full' ? 'p-6 md:p-12' : 'p-6 md:p-10']}
+>
+  <div class="grid gap-8 md:grid-cols-12 md:items-end">
+    <div class="md:col-span-6">
+      <p class="label flex items-center gap-3">
+        <span class="inline-block size-2.5 bg-accent" aria-hidden="true"></span>
+        Android beta · Free
+      </p>
+      <h2 class:list={['mt-4 font-display font-extrabold uppercase leading-none tracking-tighter', variant === 'full' ? 'text-4xl md:text-6xl' : 'text-3xl md:text-5xl']}>
+        Test {name} on Android<span class="text-accent">.</span>
+      </h2>
+      <p class="mt-5 text-lg leading-relaxed text-ink/80">
+        Google Play needs a group of testers before {name} can launch. Join the closed test, play it before anyone else, and help it ship.
+        {variant === 'compact' && <> <a class="underline decoration-accent decoration-2 underline-offset-4" href={`/apps/${app.id}`}>More about {name}</a>.</>}
+      </p>
+    </div>
+
+    <div class="md:col-span-6">
+      <form method="post" action="/api/testers" data-beta-form novalidate>
+        <input type="hidden" name="app" value={app.id} />
+        <div class="absolute -left-[9999px] size-px overflow-hidden" aria-hidden="true">
+          <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <label for={inputId} class="label block">Your Google account email</label>
+        <div class="mt-2 flex flex-col gap-3 sm:flex-row">
+          <input
+            id={inputId}
+            type="email"
+            name="email"
+            required
+            maxlength="254"
+            autocomplete="email"
+            inputmode="email"
+            placeholder="you@gmail.com"
+            class="min-w-0 flex-1 border-2 border-ink bg-paper px-4 py-3 text-lg placeholder:text-muted focus:outline-3 focus:outline-accent"
+          />
+          <button type="submit" class="btn justify-center">Join the beta <span aria-hidden="true">→</span></button>
+        </div>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          Use the Gmail or Google account you use on Google Play. We'll only email you about the beta, and you can ask to be removed any time at <a class="underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        </p>
+        <p data-beta-error role="alert" class="mt-3 hidden font-semibold text-accent"></p>
+      </form>
+      <div data-beta-success hidden role="status" tabindex="-1" class="border-2 border-ink bg-accent p-5 text-accent-ink focus:outline-none">
+        <p class="font-display text-2xl font-bold tracking-tight">You're on the list.</p>
+        <p class="mt-2 text-lg">We'll email you the Google Play invite link soon. Thanks for helping {name} launch!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ERROR = 'Something went wrong. Please try again, or email support@mendxz.com.';
+
+  function showSuccess(root: HTMLElement) {
+    root.querySelector<HTMLFormElement>('[data-beta-form]')!.hidden = true;
+    const ok = root.querySelector<HTMLElement>('[data-beta-success]')!;
+    ok.hidden = false;
+    ok.focus();
+  }
+  function showError(root: HTMLElement, message: string) {
+    const el = root.querySelector<HTMLElement>('[data-beta-error]')!;
+    el.textContent = message;
+    el.classList.remove('hidden');
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-beta]').forEach((root) => {
+    const form = root.querySelector<HTMLFormElement>('[data-beta-form]')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const email = form.querySelector<HTMLInputElement>('input[name="email"]')!;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      root.querySelector('[data-beta-error]')!.classList.add('hidden');
+      if (!email.checkValidity()) {
+        showError(root, 'Please enter a valid email address.');
+        email.focus();
+        return;
+      }
+      button.disabled = true;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+        const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+        if (res.ok && data.ok) {
+          showSuccess(root);
+          ((window as any).dataLayer ||= []).push({ event: 'beta_signup', app: root.dataset.app });
+        } else {
+          showError(root, data.error || ERROR);
+        }
+      } catch {
+        showError(root, ERROR);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+
+</script>
