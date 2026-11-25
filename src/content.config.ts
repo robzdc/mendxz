@@ -14,6 +14,8 @@ const apps = defineCollection({
       genre: z.string(),
       platforms: z.array(z.enum(['ios', 'android'])).min(1),
       status: z.enum(['coming-soon', 'live']).default('coming-soon'),
+      /** With status "live": platforms not released yet. Their store button stays "Coming soon". */
+      comingSoon: z.array(z.enum(['ios', 'android'])).default([]),
       price: z.string().default('Free'),
       appStoreUrl: z.url().optional(),
       playStoreUrl: z.url().optional(),

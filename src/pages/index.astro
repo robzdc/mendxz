@@ -3,12 +3,13 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Marquee from '../components/Marquee.astro';
 import AppCard from '../components/AppCard.astro';
+import { releaseLabel } from '../lib/format';
 import BetaSignup from '../components/BetaSignup.astro';
 import { SITE } from '../config/site';
 import { graph, organization, website, webPage } from '../lib/schema';
 
 const apps = (await getCollection('apps')).sort((a, b) => a.data.order - b.data.order);
-const betaApps = apps.filter((a) => a.data.androidBeta && a.data.status === 'coming-soon');
+const betaApps = apps.filter((a) => a.data.androidBeta && (a.data.status === 'coming-soon' || a.data.comingSoon.includes('android')));
 const jsonLd = graph(
   organization(),
   website(),
@@ -41,7 +42,7 @@ const jsonLd = graph(
     </div>
   </section>
 
-  <Marquee items={apps.map((a) => a.data.status === 'live' ? `${a.data.name} out now` : `${a.data.name} coming soon`).concat(['iOS', 'Android'])} />
+  <Marquee items={apps.map((a) => `${a.data.name} ${releaseLabel(a.data).toLowerCase()}`).concat(['iOS', 'Android'])} />
 
   <section id="apps" class="wrap scroll-mt-8 py-20 md:py-28" aria-labelledby="apps-title">
     <div class="flex items-end justify-between gap-6 border-b-2 border-ink pb-6">

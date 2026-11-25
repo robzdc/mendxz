@@ -9,7 +9,7 @@ import Faq from '../../../components/Faq.astro';
 import BetaSignup from '../../../components/BetaSignup.astro';
 import { SITE, absoluteUrl } from '../../../config/site';
 import { app as appSchema, breadcrumbs, graph, organization, webPage } from '../../../lib/schema';
-import { fmtDate, pad, platformLabel } from '../../../lib/format';
+import { fmtDate, pad, platformLabel, releaseLabel } from '../../../lib/format';
 
 export async function getStaticPaths() {
   const apps = await getCollection('apps');
@@ -21,7 +21,7 @@ const { app } = Astro.props;
 const d = app.data;
 const { Content } = await render(app);
 const path = `/apps/${app.id}`;
-const showBeta = d.androidBeta && d.status === 'coming-soon';
+const showBeta = d.androidBeta && (d.status === 'coming-soon' || d.comingSoon.includes('android'));
 
 const icon = await getImage({ src: d.icon, width: 512, height: 512, format: 'png' });
 const shots = await Promise.all(d.screenshots.map((s) => getImage({ src: s.src, width: 600, format: 'webp' })));
@@ -38,7 +38,7 @@ const facts = [
   { k: 'Genre', v: d.genre },
   { k: 'Platforms', v: platforms },
   { k: 'Price', v: d.price },
-  { k: 'Status', v: d.status === 'live' ? 'Available now' : 'Coming soon' },
+  { k: 'Status', v: d.status === 'live' && !d.comingSoon.length ? 'Available now' : releaseLabel(d) },
   ...(d.releaseDate ? [{ k: 'Release', v: fmtDate(d.releaseDate) }] : []),
   { k: 'Developer', v: `${SITE.founder.name} (${SITE.name})` },
 ];
@@ -61,7 +61,7 @@ const jsonLd = graph(
       <div class="mt-12 flex items-center gap-4">
         <Image src={d.icon} alt={`${d.name} app icon`} width={112} height={112} loading="eager" class="size-20 rounded-[22%] border-2 border-ink shadow-hard md:size-28" />
         <span class:list={['label px-2 py-1', d.status === 'live' ? 'bg-ink text-paper' : 'bg-accent text-accent-ink']}>
-          {d.status === 'live' ? 'Out now' : 'Coming soon'}
+          {releaseLabel(d)}
         </span>
       </div>
       <h1 class="mt-8 font-display text-giga font-extrabold uppercase tracking-tighter break-words md:text-mega">{d.name}<span class="text-accent">.</span></h1>
@@ -77,7 +77,7 @@ const jsonLd = graph(
       </div>
     </header>
 
-    <Marquee items={[d.genre, ...d.platforms.map(platformLabel), d.price, d.status === 'live' ? 'Out now' : 'Coming soon']} />
+    <Marquee items={[d.genre, ...d.platforms.map(platformLabel), d.price, releaseLabel(d)]} />
 
     {d.cover && (
       <figure class="wrap pt-14 md:pt-20">

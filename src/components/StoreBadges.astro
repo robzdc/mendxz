@@ -9,7 +9,7 @@ const stores = [
 ---
 <div class="flex flex-wrap gap-3">
   {stores.map((s) => {
-    const live = app.status === 'live' && s.url;
+    const live = app.status === 'live' && s.url && !app.comingSoon.includes(s.icon === 'apple' ? 'ios' : 'android');
     const Tag = live ? 'a' : 'div';
     return (
       <Tag

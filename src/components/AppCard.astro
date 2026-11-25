@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import { pad, platformLabel } from '../lib/format';
+import { pad, platformLabel, releaseLabel } from '../lib/format';
 export interface Props { app: CollectionEntry<'apps'>; index: number }
 const { app, index } = Astro.props;
 const d = app.data;
@@ -19,7 +19,7 @@ const d = app.data;
         <li class="label border border-ink px-2 py-1">{d.genre}</li>
         {d.platforms.map((p) => <li class="label border border-ink px-2 py-1">{platformLabel(p)}</li>)}
         <li class:list={['label px-2 py-1', d.status === 'live' ? 'bg-ink text-paper' : 'bg-accent text-accent-ink']}>
-          {d.status === 'live' ? 'Out now' : 'Coming soon'}
+          {releaseLabel(d)}
         </li>
       </ul>
     </div>

@@ -9,13 +9,14 @@ description: Astrosurf is a one-tap space arcade game for iPhone, iPad and Andro
 type: game
 genre: Arcade
 platforms: [ios, android]
-# When the game goes live, change status to "live" to turn the store buttons on.
-status: coming-soon
+# "live" turns the store buttons on. Platforms listed in comingSoon stay "Coming soon" until removed.
+status: live
+comingSoon: [android]
 price: Free
-appStoreUrl: https://apps.apple.com/app/id6831235043
+appStoreUrl: https://apps.apple.com/us/app/astro-surf-orbit-hop/id6831235043
 playStoreUrl: https://play.google.com/store/apps/details?id=com.mendxz.studio.astrosurf
 # releaseDate: 2026-12-01
-# Shows the "Test on Android" sign-up form (homepage + app page) while status is coming-soon.
+# Shows the "Test on Android" sign-up form (homepage + app page) while android is in comingSoon.
 androidBeta: true
 icon: ../../assets/apps/astrosurf/icon.png
 ogImage: /og/astrosurf.png
